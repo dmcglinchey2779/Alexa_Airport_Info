@@ -4,7 +4,7 @@
 //module change_code declaration enables live reloading of skill service when
 //running locally as changes are made
 module.change_code = 1;
-var Alexa = require('alex-app');
+var Alexa = require('alexa-app');
 var skill = new Alexa.app('airport_info_do_over');
 var FAADataHelper = require('./faa_data_helper');
 var _ = require('lodash');
