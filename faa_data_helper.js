@@ -15,13 +15,16 @@ FAADataHelper.prototype.getAirportStatus = function(airportCode) {
   };
   return requestPromise(options);
 };
+//lodash string _.template function - ES template literals
 FAADataHelper.prototype.formatAirportStatus = function(airportStatusObject) {
   if (airportStatusObject.delay === 'true') {
     var template = _.template('There is currently a delay for ${airport}. ' +
-  'The average delay time is ${delay_time}.');
+  'The average delay time is ${delay_time}.' +
+  'The reason for the delay is ${reason}.');
   return template({
     airport: airportStatusObject.name,
-    delay_time: airportStatusObject.status.avgDelay
+    delay_time: airportStatusObject.status.avgDelay,
+    reason: airportStatusObject.status.reason
   });
 } else {
   //no delay
