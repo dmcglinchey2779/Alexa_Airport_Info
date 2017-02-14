@@ -33,4 +33,16 @@ FAADataHelper.prototype.formatAirportStatus = function(airportStatusObject) {
 }
 };
 
+FAADataHelper.prototype.formatAirportWeather = function(airportStatusObject) {
+  var template = _.template('Local weather conditions at ${airport} are as follows: ' +
+'the weather is ${weather}. The temperature is ${temp}.' +
+'The wind is: ${wind}.');
+return template({
+  airport: airportStatusObject.name,
+  weather: airportStatusObject.weather.weather,
+  temp: airportStatusObject.weather.temp,
+  wind: airportStatusObject.weather.wind
+});
+};
+
 module.exports = FAADataHelper;

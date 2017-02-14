@@ -45,4 +45,41 @@ function(request, response) {
 }
 );
 
+//add airportWeatherIntent handler
+skill.intent('airportWeatherIntent', {
+  'slots': {
+    'AIRPORTCODE': 'FAACODES'
+  },
+  'utterances': ['{|weather|conditions} {|temperature|wind} {-|AIRPORTCODE}']
+},
+
+function(request, response) {
+  //2.18 Retrieving the slot value
+  var airportCode = request.slot('AIRPORTCODE');
+  //2.20 handling a failed response
+
+  if(_.isEmpty(airportCode)) {
+    var prompt = 'I didn\'t hear an airport code. Tell me an airport code.';
+    reponse.say(prompt).reprompt(reprompt).shouldEndSession(false);
+    return true;
+  } else {
+  var faaDataHelper = new FAADataHelper();
+  faaDataHelper.getAirportStatus(airportCode).then(function(airportStatus) {
+    console.log(airportStatus);
+    response.say(faaDataHelper.formatAirportWeather(airportStatus)).send();
+  }).catch(function(err) {
+    console.log(err.statusCode);
+    var prompt = 'I didn\'t have data for an airport code of ' + airportCode;
+    response.say(prompt).reprompt(reprompt).shouldEndSession(false).send();
+
+
+  });
+  return false;
+}
+}
+
+);
+
+
+
 module.exports = skill;
